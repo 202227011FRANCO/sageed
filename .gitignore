@@ -1,0 +1,23 @@
+# Dependencias
+node_modules/
+vendor/
+
+# Configuración local
+.env
+.env.local
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Subidas de usuarios
+uploads/*
+!uploads/.gitkeep

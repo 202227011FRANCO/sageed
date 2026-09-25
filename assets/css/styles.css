@@ -1,0 +1,171 @@
+/* ====== ESTILOS GENERALES SAGEED ====== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ====== VISTA PREVIA E IMPRESIÓN ====== */
+.paper-preview {
+    position: relative;
+    width: 100%;
+    max-width: 216mm;
+    min-height: 279mm;
+    margin: 0 auto;
+    background: #fff;
+    padding: 35mm 15mm 12mm 15mm;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    line-height: 1.25;
+    color: #000;
+    box-sizing: border-box;
+}
+
+.paper-preview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 35mm;
+    border-bottom: 1px dashed #cbd5e1;
+    background: repeating-linear-gradient(
+        45deg,
+        #f8fafc,
+        #f8fafc 10px,
+        #f1f5f9 10px,
+        #f1f5f9 20px
+    );
+    pointer-events: none;
+}
+
+.page-break {
+    page-break-before: always;
+    break-before: page;
+}
+
+.paper-preview .doc-header {
+    text-align: center;
+    font-size: 8pt;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+.paper-preview .doc-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 11pt;
+    margin: 4px 0;
+}
+.paper-preview .doc-subtitle {
+    text-align: center;
+    font-weight: bold;
+    font-size: 10pt;
+    margin: 2px 0 10px 0;
+}
+.paper-preview .field-line {
+    margin: 3px 0;
+    font-size: 9pt;
+}
+.paper-preview .field-line strong {
+    font-weight: bold;
+}
+.paper-preview .desc-box {
+    border: 1px solid #000;
+    min-height: 45px;
+    padding: 4px 6px;
+    margin: 4px 0 8px 0;
+    font-size: 9pt;
+}
+.paper-preview table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8pt;
+    margin: 4px 0 8px 0;
+}
+.paper-preview table th,
+.paper-preview table td {
+    border: 1px solid #000;
+    padding: 3px 4px;
+    vertical-align: top;
+    text-align: left;
+}
+.paper-preview table th {
+    background: #e8e8e8;
+    font-weight: bold;
+    text-align: center;
+}
+.paper-preview .section-label {
+    font-weight: bold;
+    font-size: 9pt;
+    margin: 6px 0 3px 0;
+}
+.paper-preview .signature-block {
+    margin-top: 20px;
+    font-size: 8pt;
+}
+.paper-preview .signature-block .sig-line {
+    border-top: 1px solid #000;
+    text-align: center;
+    padding-top: 3px;
+    margin-top: 25px;
+}
+.paper-preview .signature-block .sig-name {
+    font-weight: bold;
+    text-align: center;
+    font-size: 8pt;
+}
+.paper-preview .signature-block .sig-role {
+    text-align: center;
+    font-size: 8pt;
+}
+
+.paper-preview .signature-block.page-break {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 220mm;
+    page-break-before: always;
+    break-before: page;
+    border-top: 2px dashed #cbd5e1;
+    padding-top: 15px;
+    margin-top: 15px;
+    box-sizing: border-box;
+}
+
+/* ====== IMPRESIÓN ====== */
+@media print {
+    body * { visibility: hidden; }
+    .paper-preview, .paper-preview * { visibility: visible; }
+    .paper-preview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 216mm !important;
+        min-height: 279mm !important;
+        padding: 35mm 15mm 12mm 15mm !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+    }
+    .paper-preview::before {
+        display: none;
+    }
+    .paper-preview .signature-block.page-break {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 220mm;
+        border-top: none;
+        padding-top: 0;
+        margin-top: 0;
+        page-break-before: always;
+        break-before: page;
+        box-sizing: border-box;
+    }
+    @page { size: letter portrait; margin: 0; }
+}
