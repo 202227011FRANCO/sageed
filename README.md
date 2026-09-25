@@ -55,8 +55,8 @@ Sistema web para la gestión del programa de Educación Dual del Tecnológico Na
 ## Colaboradores
 
 - [Franco Contreras Pablo Uriel](https://github.com/202227011FRANCO)
-- [Nombre del colaborador](https://github.com/colaborador)
+- [Angel Cardenas Milton Alejandro](https://github.com/tu_usuario)
 
-## 📄 Licencia
+## Licencia
 
 Uso académico - TecNM EdoMéx
