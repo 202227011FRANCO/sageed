@@ -55,7 +55,7 @@ Sistema web para la gestión del programa de Educación Dual del Tecnológico Na
 ## Colaboradores
 
 - [Franco Contreras Pablo Uriel](https://github.com/202227011FRANCO)
-- [Angel Cardenas Milton Alejandro](https://github.com/tu_usuario)
+- [Angel Cardenas Milton Alejandro](https://github.com/MiltonAAC)
 
 ## Licencia
 
