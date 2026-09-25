@@ -1,5 +1,3 @@
-let DB = { estudiantes: [], empresas: [], mentoresAcad: [], mentoresUe: [], competencias: [] };
-
 async function cargarDatosGlobales() {
     try {
         const [est, emp, mAcad, mUe, comp] = await Promise.all([
