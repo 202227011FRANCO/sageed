@@ -580,40 +580,121 @@
                             </div>
                         </div>
 
-                        <!-- FORMULARIO ANEXO 5.5 -->
-                        <div id="form-anexo-55-campos" class="hidden space-y-4 text-xs">
-                            <div>
-                                <label class="block text-gray-600 font-semibold mb-1">Periodo Evaluado (Parcial / Final):</label>
-                                <select id="an55-periodo" class="w-full border border-gray-200 p-2 rounded-lg">
-                                    <option value="Primer Reporte Parcial">Primer Reporte Parcial</option>
-                                    <option value="Segundo Reporte Parcial">Segundo Reporte Parcial</option>
-                                    <option value="Evaluación Final Dual">Evaluación Final Dual</option>
-                                </select>
+                        <!-- FORMULARIO ANEXO 5.5 (NUEVO FORMATO) -->
+                        <div id="form-anexo-55-campos" class="hidden space-y-3 text-xs">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Nombre del Proyecto o Plan de Rotación:</label>
+                                    <input type="text" id="an55-proyecto" value="Sistema de Control de Inventarios" class="w-full border border-gray-200 p-2 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Unidad Económica:</label>
+                                    <input type="text" id="an55-ue" value="Chrysler de México S.A de C.V" class="w-full border border-gray-200 p-2 rounded-lg">
+                                </div>
                             </div>
-                            <div class="space-y-2 border-t border-gray-100 pt-3">
-                                <p class="font-bold text-gray-700">Criterios de Evaluación en la UE (1 al 10):</p>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block text-gray-500 mb-0.5">Asistencia y Puntualidad:</label>
-                                        <input type="number" id="an55-c1" min="1" max="10" value="10" class="w-full border border-gray-200 p-2 rounded-lg">
-                                    </div>
-                                    <div>
-                                        <label class="block text-gray-500 mb-0.5">Iniciativa y Liderazgo:</label>
-                                        <input type="number" id="an55-c2" min="1" max="10" value="9" class="w-full border border-gray-200 p-2 rounded-lg">
-                                    </div>
-                                    <div>
-                                        <label class="block text-gray-500 mb-0.5">Trabajo en Equipo:</label>
-                                        <input type="number" id="an55-c3" min="1" max="10" value="10" class="w-full border border-gray-200 p-2 rounded-lg">
-                                    </div>
-                                    <div>
-                                        <label class="block text-gray-500 mb-0.5">Dominio de Tecnologías:</label>
-                                        <input type="number" id="an55-c4" min="1" max="10" value="9" class="w-full border border-gray-200 p-2 rounded-lg">
-                                    </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Nombre del Mentor de la UE:</label>
+                                    <input type="text" id="an55-mentor-ue" value="Ing. Guillermo Vázquez Tapia" class="w-full border border-gray-200 p-2 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Nombre del Mentor Académico:</label>
+                                    <input type="text" id="an55-mentor-acad" value="M. en C. Roberto Cruz Valdés" class="w-full border border-gray-200 p-2 rounded-lg">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Periodo Inicio:</label>
+                                    <input type="date" id="an55-periodo-inicio" value="2026-01-15" class="w-full border border-gray-200 p-2 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Periodo Término:</label>
+                                    <input type="date" id="an55-periodo-termino" value="2026-06-15" class="w-full border border-gray-200 p-2 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Semestre / Cuatrimestre:</label>
+                                    <input type="text" id="an55-semestre" value="9no Semestre" class="w-full border border-gray-200 p-2 rounded-lg">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Horarios (incluir alimentos):</label>
+                                    <input type="text" id="an55-horarios" value="Lunes a Viernes 9:00 - 14:00 hrs" class="w-full border border-gray-200 p-2 rounded-lg">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-600 font-semibold mb-1">Apoyo (cuando aplique):</label>
+                                    <input type="text" id="an55-apoyo" value="Beca Educación Dual" class="w-full border border-gray-200 p-2 rounded-lg">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-gray-600 font-semibold mb-1">Retroalimentación del Mentor de la UE:</label>
-                                <textarea id="an55-comentarios" rows="3" class="w-full border border-gray-200 p-2 rounded-lg">Excelente desempeño. Demuestra gran adaptabilidad y sólido criterio técnico.</textarea>
+                                <label class="block text-gray-600 font-semibold mb-1">DESCRIPCIÓN DEL PROYECTO (¿QUÉ?, ¿CÓMO?, ¿DÓNDE?, ¿CUÁNDO?, ¿PARA QUÉ?):</label>
+                                <textarea id="an55-desc-proyecto" rows="4" class="w-full border border-gray-200 p-2 rounded-lg">Desarrollo de un sistema web para la gestión de inventarios en la planta de producción, utilizando tecnologías .NET y SQL Server, con el fin de optimizar los tiempos de respuesta y reducir errores en el control de stock.</textarea>
+                            </div>
+
+                            <!-- Competencias y Asignaturas -->
+                            <div class="border-t border-gray-100 pt-3">
+                                <p class="font-bold text-gray-700 mb-2">COMPETENCIAS A DESARROLLAR / ASIGNATURAS</p>
+                                <div class="space-y-2">
+                                    <div class="grid grid-cols-3 gap-1 text-[10px] font-semibold text-gray-500">
+                                        <span>No.</span>
+                                        <span>Competencia</span>
+                                        <span>Asignatura</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-1">
+                                        <input type="text" value="1" class="border border-gray-200 p-1 rounded text-center" readonly>
+                                        <input type="text" id="an55-comp1" value="Modelado de Bases de Datos" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-comp1-asig" value="Base de Datos" class="border border-gray-200 p-1 rounded">
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-1">
+                                        <input type="text" value="2" class="border border-gray-200 p-1 rounded text-center" readonly>
+                                        <input type="text" id="an55-comp2" value="Programación Orientada a Objetos" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-comp2-asig" value="Programación Web" class="border border-gray-200 p-1 rounded">
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-1">
+                                        <input type="text" value="3" class="border border-gray-200 p-1 rounded text-center" readonly>
+                                        <input type="text" id="an55-comp3" value="Trabajo en Equipo" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-comp3-asig" value="Ingeniería de Software" class="border border-gray-200 p-1 rounded">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Matriz de Evaluación -->
+                            <div class="border-t border-gray-100 pt-3">
+                                <p class="font-bold text-gray-700 mb-2">MATRIZ DE EVALUACIÓN DE LAS COMPETENCIAS</p>
+                                <div class="space-y-2">
+                                    <div class="grid grid-cols-6 gap-1 text-[9px] font-semibold text-gray-500">
+                                        <span>No. Comp.</span>
+                                        <span>Periodo</span>
+                                        <span>Actividades</span>
+                                        <span>Lugar UE/IE</span>
+                                        <span>Ponderación</span>
+                                        <span>Nivel Desempeño</span>
+                                    </div>
+                                    <div class="grid grid-cols-6 gap-1">
+                                        <input type="text" value="1" readonly class="border border-gray-200 p-1 rounded text-center">
+                                        <input type="text" id="an55-eval1-periodo" value="1er Parcial" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval1-act" value="Diseño de base de datos" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval1-lugar" value="UE" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval1-pond" value="40%" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval1-nivel" value="Excelente" class="border border-gray-200 p-1 rounded">
+                                    </div>
+                                    <div class="grid grid-cols-6 gap-1">
+                                        <input type="text" value="2" readonly class="border border-gray-200 p-1 rounded text-center">
+                                        <input type="text" id="an55-eval2-periodo" value="2do Parcial" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval2-act" value="Desarrollo módulos C#" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval2-lugar" value="UE" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval2-pond" value="40%" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval2-nivel" value="Bueno" class="border border-gray-200 p-1 rounded">
+                                    </div>
+                                    <div class="grid grid-cols-6 gap-1">
+                                        <input type="text" value="3" readonly class="border border-gray-200 p-1 rounded text-center">
+                                        <input type="text" id="an55-eval3-periodo" value="Final" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval3-act" value="Entrega final del proyecto" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval3-lugar" value="IE" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval3-pond" value="20%" class="border border-gray-200 p-1 rounded">
+                                        <input type="text" id="an55-eval3-nivel" value="Excelente" class="border border-gray-200 p-1 rounded">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

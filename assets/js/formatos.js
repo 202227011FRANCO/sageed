@@ -225,61 +225,149 @@ function actualizarPrevisualizacionFormatos() {
             </div>
         `;
     } else if (tipoAnexo === "5.5") {
-        const evalPer = document.getElementById('an55-periodo').value;
-        const c1 = parseInt(document.getElementById('an55-c1').value) || 0;
-        const c2 = parseInt(document.getElementById('an55-c2').value) || 0;
-        const c3 = parseInt(document.getElementById('an55-c3').value) || 0;
-        const c4 = parseInt(document.getElementById('an55-c4').value) || 0;
-        const prom = ((c1 + c2 + c3 + c4) / 4).toFixed(1);
-        const feedback = document.getElementById('an55-comentarios').value;
+        const proyecto = document.getElementById('an55-proyecto').value;
+        const ue = document.getElementById('an55-ue').value;
+        const mentorUeNombre = document.getElementById('an55-mentor-ue').value;
+        const mentorAcadNombre = document.getElementById('an55-mentor-acad').value;
+        const periodoInicio = document.getElementById('an55-periodo-inicio').value;
+        const periodoTermino = document.getElementById('an55-periodo-termino').value;
+        const semestre = document.getElementById('an55-semestre').value;
+        const horarios = document.getElementById('an55-horarios').value;
+        const apoyo = document.getElementById('an55-apoyo').value;
+        const descProyecto = document.getElementById('an55-desc-proyecto').value;
+
+        const c1 = document.getElementById('an55-comp1').value;
+        const c1Asig = document.getElementById('an55-comp1-asig').value;
+        const c2 = document.getElementById('an55-comp2').value;
+        const c2Asig = document.getElementById('an55-comp2-asig').value;
+        const c3 = document.getElementById('an55-comp3').value;
+        const c3Asig = document.getElementById('an55-comp3-asig').value;
+
+        const e1Per = document.getElementById('an55-eval1-periodo').value;
+        const e1Act = document.getElementById('an55-eval1-act').value;
+        const e1Lugar = document.getElementById('an55-eval1-lugar').value;
+        const e1Pond = document.getElementById('an55-eval1-pond').value;
+        const e1Nivel = document.getElementById('an55-eval1-nivel').value;
+
+        const e2Per = document.getElementById('an55-eval2-periodo').value;
+        const e2Act = document.getElementById('an55-eval2-act').value;
+        const e2Lugar = document.getElementById('an55-eval2-lugar').value;
+        const e2Pond = document.getElementById('an55-eval2-pond').value;
+        const e2Nivel = document.getElementById('an55-eval2-nivel').value;
+
+        const e3Per = document.getElementById('an55-eval3-periodo').value;
+        const e3Act = document.getElementById('an55-eval3-act').value;
+        const e3Lugar = document.getElementById('an55-eval3-lugar').value;
+        const e3Pond = document.getElementById('an55-eval3-pond').value;
+        const e3Nivel = document.getElementById('an55-eval3-nivel').value;
+
+        const fmtFecha = (f) => {
+            if (!f) return '_____________';
+            const d = new Date(f + 'T00:00:00');
+            return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' });
+        };
 
         previewPapel.innerHTML = `
             <div class="doc-header">"2026. Año del Humanismo Mexicano en el Estado de México".</div>
             <div class="doc-title">ANEXO 5.5</div>
-            <div class="doc-subtitle">EVALUACIÓN Y SEGUIMIENTO DE EDUCACIÓN DUAL</div>
+            <div class="doc-subtitle">SEGUIMIENTO Y EVALUACIÓN DEL ESTUDIANTE DUAL</div>
 
-            <div class="field-line"><strong>Estudiante:</strong> ${est.nombre}</div>
-            <div class="field-line"><strong>Fase Evaluada:</strong> ${evalPer}</div>
-            <div class="field-line"><strong>Empresa Evaluadora:</strong> ${emp ? emp.nombre : 'S/A'}</div>
-            <div class="field-line"><strong>Mentor Evaluador:</strong> ${mentUe ? mentUe.nombre : 'S/A'}</div>
+            <div class="field-line"><strong>Nombre del Proyecto o Plan de Rotación:</strong> ${proyecto}</div>
+            <div class="field-line"><strong>Unidad Económica:</strong> ${ue}</div>
+            <div class="field-line"><strong>Institución Educativa:</strong> Tecnológico de Estudios Superiores de Chalco</div>
+            <div class="field-line"><strong>Programa Educativo:</strong> ${est.carrera}</div>
+            <div class="field-line"><strong>Nombre del Mentor de la UE:</strong> ${mentorUeNombre}</div>
+            <div class="field-line"><strong>Nombre del Mentor Académico:</strong> ${mentorAcadNombre}</div>
+            <div class="field-line"><strong>Periodo:</strong> &nbsp;&nbsp; Inicio: <strong>${fmtFecha(periodoInicio)}</strong> &nbsp;&nbsp;&nbsp; Término: <strong>${fmtFecha(periodoTermino)}</strong></div>
+            <div class="field-line"><strong>Nombre del Estudiante Dual:</strong> ${est.nombre}</div>
+            <div class="field-line"><strong>Semestre / Cuatrimestre:</strong> ${semestre} &nbsp;&nbsp;&nbsp; <strong>Horarios (incluir alimentos):</strong> ${horarios}</div>
+            <div class="field-line"><strong>Apoyo (cuando aplique):</strong> ${apoyo}</div>
+
+            <div class="section-label">DESCRIPCIÓN DEL PROYECTO (¿QUÉ?, ¿CÓMO?, ¿DÓNDE?, ¿CUÁNDO?, ¿PARA QUÉ?):</div>
+            <div class="desc-box">${descProyecto}</div>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Factor de Evaluación</th>
-                        <th style="width:20%">Calificación (1-10)</th>
+                        <th style="width:8%">No.</th>
+                        <th>COMPETENCIAS A DESARROLLAR</th>
+                        <th>ASIGNATURAS</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Asistencia, Disciplina y Puntualidad en la UE</td><td style="text-align:center">${c1}</td></tr>
-                    <tr><td>Iniciativa, Proactividad y Capacidad de Liderazgo</td><td style="text-align:center">${c2}</td></tr>
-                    <tr><td>Trabajo Colectivo y Relaciones Interpersonales</td><td style="text-align:center">${c3}</td></tr>
-                    <tr><td>Dominio de Herramientas y Competencias Técnicas</td><td style="text-align:center">${c4}</td></tr>
-                    <tr style="font-weight:bold;background:#f0f0f0">
-                        <td style="text-align:right">PROMEDIO FINAL EVALUACIÓN DUAL:</td>
-                        <td style="text-align:center">${prom} / 10</td>
-                    </tr>
+                    <tr><td style="text-align:center">1</td><td>${c1}</td><td>${c1Asig}</td></tr>
+                    <tr><td style="text-align:center">2</td><td>${c2}</td><td>${c2Asig}</td></tr>
+                    <tr><td style="text-align:center">3</td><td>${c3}</td><td>${c3Asig}</td></tr>
                 </tbody>
             </table>
 
-            <div class="section-label">Retroalimentación / Plan de Mejora en la Unidad Económica:</div>
-            <div class="desc-box">${feedback}</div>
+            <div class="section-label">MATRIZ DE EVALUACIÓN DE LAS COMPETENCIAS</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:8%">No. de Competencia</th>
+                        <th style="width:12%">Periodo</th>
+                        <th>Actividades</th>
+                        <th style="width:10%">Lugar: UE/IE</th>
+                        <th style="width:12%">Ponderación de Actividades %</th>
+                        <th style="width:12%">Nivel de Desempeño</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="text-align:center">1</td><td style="text-align:center">${e1Per}</td><td>${e1Act}</td><td style="text-align:center">${e1Lugar}</td><td style="text-align:center">${e1Pond}</td><td style="text-align:center">${e1Nivel}</td></tr>
+                    <tr><td style="text-align:center">2</td><td style="text-align:center">${e2Per}</td><td>${e2Act}</td><td style="text-align:center">${e2Lugar}</td><td style="text-align:center">${e2Pond}</td><td style="text-align:center">${e2Nivel}</td></tr>
+                    <tr><td style="text-align:center">3</td><td style="text-align:center">${e3Per}</td><td>${e3Act}</td><td style="text-align:center">${e3Lugar}</td><td style="text-align:center">${e3Pond}</td><td style="text-align:center">${e3Nivel}</td></tr>
+                    <tr style="font-weight:bold;background:#f0f0f0">
+                        <td colspan="4" style="text-align:right">TOTAL</td>
+                        <td style="text-align:center">100%</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size:7pt;font-style:italic;margin-top:-4px">*Repetir la matriz de evaluación de acuerdo con el número de competencias a desarrollar.</p>
 
-            <div class="signature-block" style="margin-top:30px">
-                <div style="display:flex;justify-content:space-between;gap:20px">
-                    <div style="flex:1;text-align:center">
-                        <div class="sig-line">MENTOR DE LA EMPRESA (FIRMA EVALUADOR)</div>
-                        <div class="sig-role">${mentUe ? mentUe.nombre : 'S/A'}</div>
+            <div class="section-label" style="margin-top:12px">CALENDARIZACIÓN DEL SEGUIMIENTO DE LA IE EN LA UE</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:10%">MES</th>
+                        <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                        <th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="text-align:center;font-weight:bold">FP</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td style="text-align:center;font-weight:bold">FR</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td style="text-align:center;font-weight:bold">SD</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                </tbody>
+            </table>
+            <p style="font-size:7.5pt;margin-top:-4px"><strong>FP</strong> = Fecha Programada / <strong>FR</strong> = Fecha de Realización / <strong>SD</strong> = Seguimiento Dual.</p>
+
+            <div class="signature-block page-break">
+                <div style="width:100%;">
+                    <div style="text-align:center;font-weight:bold;margin-bottom:20px">ELABORARON</div>
+
+                    <div style="display:flex;justify-content:space-between;gap:20px;margin-bottom:60px">
+                        <div style="flex:1;text-align:center">
+                            <div class="sig-line">NOMBRE Y FIRMA</div>
+                            <div class="sig-role">MENTOR ACADÉMICO</div>
+                        </div>
+                        <div style="flex:1;text-align:center">
+                            <div class="sig-line">NOMBRE Y FIRMA</div>
+                            <div class="sig-role">RESPONSABLE DEL PROGRAMA ACADÉMICO</div>
+                        </div>
                     </div>
-                    <div style="flex:1;text-align:center">
-                        <div class="sig-line">COORDINADOR ACADÉMICO TECNM (SELLO/FIRMA)</div>
-                        <div class="sig-role">${mentAcad ? mentAcad.nombre : 'S/A'}</div>
+
+                    <div style="display:flex;justify-content:center;margin-top:80px">
+                        <div style="flex:0 0 60%;text-align:center">
+                            <div class="sig-line">NOMBRE Y FIRMA</div>
+                            <div class="sig-role">ESTUDIANTE DUAL</div>
+                        </div>
                     </div>
                 </div>
             </div>
         `;
     }
-
     renderHistorialFirmas(est);
 }
 
