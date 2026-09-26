@@ -1,48 +1,65 @@
 <?php
+// api/anexo54.php
 require_once '../config/database.php';
-require_once '../vendor/autoload.php'; // PHPWord
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $periodo       = $_POST['periodo'];
-    $horas         = $_POST['horas'];
-    $descripcion   = $_POST['descripcion'];
-    $observaciones = $_POST['observaciones'];
+    $estudiante_id = $_POST['estudiante_id'] ?? 1;
+    $periodo       = $_POST['periodo'] ?? '';
+    $horas         = $_POST['horas'] ?? 0;
+    $descripcion   = $_POST['descripcion'] ?? '';
+    $observaciones = $_POST['observaciones'] ?? '';
 
-    $nombreArchivo = "anexo54_" . time() . ".docx";
-    $ruta = "../uploads/" . $nombreArchivo;
+    $nombreArchivo = "anexo54_" . time() . ".pdf";
+    $ruta = "uploads/" . $nombreArchivo;
 
-    $phpWord = new \PhpOffice\PhpWord\PhpWord();
-    $section = $phpWord->addSection();
+    // Si tienes instalado PHPWord mediante Composer, se genera el .docx opcionalmente
+    if (file_exists('../vendor/autoload.php')) {
+        require_once '../vendor/autoload.php';
+        $nombreArchivo = "anexo54_" . time() . ".docx";
+        $ruta = "../uploads/" . $nombreArchivo;
 
-    $section->addText('"2026. Año del Humanismo Mexicano en el Estado de México".', ['bold' => true]);
-    $section->addText("ANEXO 5.4", ['size' => 14, 'bold' => true]);
-    $section->addText("REPORTE DE ACTIVIDADES DE APRENDIZAJE", ['size' => 12]);
+        if (!is_dir('../uploads')) {
+            mkdir('../uploads', 0777, true);
+        }
 
-    $section->addText("Periodo Reportado: $periodo");
-    $section->addText("Horas en Periodo: $horas");
-    $section->addText("Actividades Realizadas:");
-    $section->addText($descripcion);
-    $section->addText("Observaciones:");
-    $section->addText($observaciones);
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $section = $phpWord->addSection();
 
-    $section->addTextBreak(2);
-    $table = $section->addTable();
-    $table->addRow();
-    $table->addCell(3000)->addText("FIRMA DEL ESTUDIANTE");
-    $table->addCell(3000)->addText("Vo.Bo. MENTOR ACADÉMICO");
-    $table->addCell(3000)->addText("FIRMA MENTOR UE");
+        $section->addText('"2026. Año del Humanismo Mexicano en el Estado de México".', ['bold' => true]);
+        $section->addText("ANEXO 5.4", ['size' => 14, 'bold' => true]);
+        $section->addText("REPORTE DE ACTIVIDADES DE APRENDIZAJE", ['size' => 12]);
+        $section->addText("Periodo Reportado: $periodo");
+        $section->addText("Horas en Periodo: $horas");
+        $section->addText("Actividades Realizadas:");
+        $section->addText($descripcion);
+        $section->addText("Observaciones:");
+        $section->addText($observaciones);
 
-    $phpWord->save($ruta, 'Word2007');
+        $phpWord->save($ruta, 'Word2007');
+    }
 
-    $conn = getConnection();
-    $sql = "INSERT INTO anexos_subidos 
-            (estudiante_id, tipo_anexo, nombre_archivo, ruta_archivo, fecha_carga) 
-            VALUES (1, '5.4', '$nombreArchivo', '$ruta', NOW())";
+    try {
+        // Usamos getDB() definido en config/database.php (PDO)
+        $pdo = getDB();
+        $sql = "INSERT INTO anexos_subidos 
+                (estudiante_id, tipo_anexo, nombre_archivo, ruta_archivo, fecha_carga) 
+                VALUES (:estudiante_id, '5.4', :nombre_archivo, :ruta_archivo, NOW())";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':estudiante_id'  => $estudiante_id,
+            ':nombre_archivo' => $nombreArchivo,
+            ':ruta_archivo'   => $ruta
+        ]);
 
-    if ($conn->query($sql)) {
-        echo "✅ Anexo 5.4 generado y guardado.";
-    } else {
-        echo "❌ Error: " . $conn->error;
+        jsonResponse([
+            'success' => true,
+            'message' => 'Anexo 5.4 registrado en la base de datos correctamente.'
+        ]);
+    } catch (PDOException $e) {
+        jsonResponse([
+            'success' => false,
+            'error'   => 'Error en base de datos: ' . $e->getMessage()
+        ], 500);
     }
 }
-?>

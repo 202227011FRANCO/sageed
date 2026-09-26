@@ -558,73 +558,200 @@
                             </div>
                         </div>
 
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <h4 class="font-bold text-gray-800 mb-4 border-b border-gray-100 pb-2">
-                                Datos de Llenado - Anexo 5.4
-                            </h4>
+                        <!-- FORMULARIO ANEXO 5.4 (ALINEADO A FORMATO OFICIAL 2026) -->
+                        <div id="form-anexo-54-campos" class="hidden space-y-4 text-xs">
+                            <form id="form-anexo54-db" onsubmit="guardarAnexo54(event)" class="space-y-4">
                         
-                            <!-- FORMULARIO ANEXO 5.4 -->
-                            <form action="api/anexo54.php" method="POST" class="space-y-4 text-xs">
-                                
-                                <!-- Periodo y horas -->
-                                <div class="grid grid-cols-2 gap-4">
+                                <!-- 1.- DATOS GENERALES -->
+                                <div class="border-b border-gray-100 pb-2">
+                                    <p class="font-bold text-tecnm-blue uppercase">1.- Datos Generales</p>
+                                </div>
+                        
+                                <div class="grid grid-cols-3 gap-3">
                                     <div>
-                                        <label for="an54-periodo" class="block text-gray-600 font-semibold mb-1">Periodo del Reporte:</                        label>
-                                        <input type="text" id="an54-periodo" name="periodo" class="w-full border p-2 rounded-lg">
+                                        <label class="block text-gray-600 font-semibold mb-1">(1) Número de Reporte:</label>
+                                        <input type="text" id="an54-num-reporte" name="num_reporte" value="1" class="w-full border                         border-gray-200 p-2 rounded-lg">
                                     </div>
                                     <div>
-                                        <label for="an54-horas" class="block text-gray-600 font-semibold mb-1">Horas Acumuladas en este                         Periodo:</label>
-                                        <input type="number" id="an54-horas" name="horas" class="w-full border p-2 rounded-lg">
+                                        <label class="block text-gray-600 font-semibold mb-1">Fecha de Elaboración:</label>
+                                        <input type="date" id="an54-fecha" name="fecha" value="2026-09-25" class="w-full border                         border-gray-200 p-2 rounded-lg">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(2) Periodo del Reporte:</label>
+                                        <input type="text" id="an54-periodo" name="periodo" value="Semana 1 a 4" class="w-full border                         border-gray-200 p-2 rounded-lg">
                                     </div>
                                 </div>
                         
-                                <!-- Descripción -->
-                                <div>
-                                    <label for="an54-descripcion" class="block text-gray-600 font-semibold mb-1">Descripción detallada de                         actividades desarrolladas:</label>
-                                    <textarea id="an54-descripcion" name="descripcion" rows="4" class="w-full border p-2 rounded-lg"></                        textarea>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(3) Nombre del Proyecto o Plan de                         Rotación:</label>
+                                        <input type="text" id="an54-proyecto" name="proyecto" value="Sistema de Control de Inventarios"                         class="w-full border border-gray-200 p-2 rounded-lg">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(4) Unidad Económica:</label>
+                                        <input type="text" id="an54-ue" name="ue" placeholder="Se toma del estudiante o escribe aquí"                         class="w-full border border-gray-200 p-2 rounded-lg">
+                                    </div>
                                 </div>
                         
-                                <!-- Observaciones -->
-                                <div>
-                                    <label for="an54-observaciones" class="block text-gray-600 font-semibold mb-1">Observaciones /                         Comentarios del Estudiante:</label>
-                                    <input type="text" id="an54-observaciones" name="observaciones" class="w-full border p-2 rounded-lg">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(5) Institución Educativa:</label>
+                                        <input type="text" id="an54-ie" name="ie" value="Tecnológico de Estudios Superiores de Chalco"                         class="w-full border border-gray-200 p-2 rounded-lg">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(6) Programa Educativo:</label>
+                                        <input type="text" id="an54-programa" name="programa" value="Ingeniería en Sistemas                         Computacionales" class="w-full border border-gray-200 p-2 rounded-lg">
+                                    </div>
                                 </div>
                         
-                                <!-- Botones -->
-                                <div class="flex gap-4">
-                                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
-                                        Generar Anexo 5.4
-                                    </button>
-                                    <button type="button" onclick="actualizarVistaPrevia()" class="bg-gray-500 text-white px-4 py-2                         rounded">
-                                        Actualizar Vista Previa del Formato
+                                <div class="grid grid-cols-3 gap-3">
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(8) Teléfono Estudiante:</label>
+                                        <input type="text" id="an54-tel-est" name="tel_est" value="55 1234 5678" class="w-full border                         border-gray-200 p-2 rounded-lg">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(8) Teléfono Mentor UE:</label>
+                                        <input type="text" id="an54-tel-ue" name="tel_ue" value="55 8765 4321" class="w-full border                         border-gray-200 p-2 rounded-lg">
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(8) Teléfono Mentor Académico:</label>
+                                        <input type="text" id="an54-tel-acad" name="tel_acad" value="55 1122 3344" class="w-full border                         border-gray-200 p-2 rounded-lg">
+                                    </div>
+                                </div>
+                        
+                                <!-- 2.- DESARROLLO DE COMPETENCIAS -->
+                                <div class="border-t border-gray-100 pt-3">
+                                    <p class="font-bold text-tecnm-blue uppercase mb-2">2.- Desarrollo de Competencias</p>
+                                    <div class="space-y-2">
+                                        <div class="grid grid-cols-12 gap-1 text-[10px] font-semibold text-gray-500">
+                                            <span class="col-span-2 text-center">No.</span>
+                                            <span class="col-span-5">(11) Competencias a Desarrollar</span>
+                                            <span class="col-span-5">(12) Asignaturas</span>
+                                        </div>
+                                        <div class="grid grid-cols-12 gap-1">
+                                            <input type="text" value="1" class="col-span-2 border border-gray-200 p-1 rounded                         text-center" readonly>
+                                            <input type="text" id="an54-comp1-nom" value="Modelado de Bases de Datos" class="col-span-5                         border border-gray-200 p-1 rounded">
+                                            <input type="text" id="an54-comp1-asig" value="Taller de Base de Datos" class="col-span-5                         border border-gray-200 p-1 rounded">
+                                        </div>
+                                        <div class="grid grid-cols-12 gap-1">
+                                            <input type="text" value="2" class="col-span-2 border border-gray-200 p-1 rounded                         text-center" readonly>
+                                            <input type="text" id="an54-comp2-nom" value="Desarrollo de APIs REST" class="col-span-5                         border border-gray-200 p-1 rounded">
+                                            <input type="text" id="an54-comp2-asig" value="Programación Web" class="col-span-5 border                         border-gray-200 p-1 rounded">
+                                        </div>
+                                        <div class="grid grid-cols-12 gap-1">
+                                            <input type="text" value="3" class="col-span-2 border border-gray-200 p-1 rounded                         text-center" readonly>
+                                            <input type="text" id="an54-comp3-nom" value="" class="col-span-5 border border-gray-200 p-1                         rounded">
+                                            <input type="text" id="an54-comp3-asig" value="" class="col-span-5 border border-gray-200 p-1                         rounded">
+                                        </div>
+                                        <div class="grid grid-cols-12 gap-1">
+                                            <input type="text" value="4" class="col-span-2 border border-gray-200 p-1 rounded                         text-center" readonly>
+                                            <input type="text" id="an54-comp4-nom" value="" class="col-span-5 border border-gray-200 p-1                         rounded">
+                                            <input type="text" id="an54-comp4-asig" value="" class="col-span-5 border border-gray-200 p-1                         rounded">
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <div>
+                                    <label for="an54-marco" class="block text-gray-600 font-semibold mb-1">(13) Marco Teórico o                         Antecedentes:</label>
+                                    <textarea id="an54-marco" name="marco_teorico" rows="3" class="w-full border border-gray-200 p-2                         rounded-lg">El diseño de bases de datos relacionales y la arquitectura cliente-servidor permiten                         gestionar la trazabilidad de las operaciones en tiempo real dentro de la Unidad Económica.</textarea>
+                                </div>
+                        
+                                <div>
+                                    <label for="an54-descripcion" class="block text-gray-600 font-semibold mb-1">(14) Descripción de las                         Actividades Realizadas:</label>
+                                    <textarea id="an54-descripcion" name="descripcion" rows="3" class="w-full border border-gray-200 p-2                         rounded-lg">Modelado de bases de datos para el módulo de despacho. Pruebas unitarias de las APIs y                         documentación técnica del proyecto.</textarea>
+                                </div>
+                        
+                                <!-- 3.- EVALUACIÓN DE LA UE -->
+                                <div class="border-t border-gray-100 pt-3 space-y-3">
+                                    <p class="font-bold text-tecnm-blue uppercase">3.- Evaluación de la UE (Matriz por Competencia)</p>
+                        
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(15) Competencia Evaluada en la Matriz:</                        label>
+                                        <input type="text" id="an54-eval-comp" value="1. Modelado de Bases de Datos" class="w-full border                         border-gray-200 p-2 rounded-lg">
+                                    </div>
+                        
+                                    <div>
+                                        <label class="block text-gray-600 font-semibold mb-1">(16) Encabezados de Nivel de Desempeño (5                         columnas):</label>
+                                        <div class="grid grid-cols-5 gap-1">
+                                            <input type="text" id="an54-nd-1" value="Insuficiente" class="border border-gray-200 p-1                         rounded text-center text-[10px]">
+                                            <input type="text" id="an54-nd-2" value="Suficiente" class="border border-gray-200 p-1                         rounded text-center text-[10px]">
+                                            <input type="text" id="an54-nd-3" value="Bueno" class="border border-gray-200 p-1 rounded                         text-center text-[10px]">
+                                            <input type="text" id="an54-nd-4" value="Notable" class="border border-gray-200 p-1 rounded                         text-center text-[10px]">
+                                            <input type="text" id="an54-nd-5" value="Excelente" class="border border-gray-200 p-1 rounded                         text-center text-[10px]">
+                                        </div>
+                                    </div>
+                        
+                                    <!-- Filas de la Matriz (17, 18, 19, Nivel y 20) -->
+                                    <div class="space-y-2">
+                                        <div class="grid grid-cols-12 gap-1 text-[10px] font-semibold text-gray-500">
+                                            <span class="col-span-3">(17) Actividad</span>
+                                            <span class="col-span-3">(18) Evidencia</span>
+                                            <span class="col-span-2 text-center">(19) Horas</span>
+                                            <span class="col-span-2 text-center">Nivel (1-5)</span>
+                                            <span class="col-span-2">(20) Fecha Eval.</span>
+                                        </div>
+                        
+                                        <!-- Fila 1 -->
+                                        <div class="grid grid-cols-12 gap-1">
+                                            <input type="text" id="an54-m1-act" value="Diseño entidad-relación" class="col-span-3 border                         border-gray-200 p-1 rounded">
+                                            <input type="text" id="an54-m1-ev" value="Diagrama ER" class="col-span-3 border                         border-gray-200 p-1 rounded">
+                                            <input type="number" id="an54-m1-hrs" value="20" name="horas" class="col-span-2 border                         border-gray-200 p-1 rounded text-center">
+                                            <select id="an54-m1-niv" class="col-span-2 border border-gray-200 p-1 rounded text-center">
+                                                <option value="1">Col 1</option>
+                                                <option value="2">Col 2</option>
+                                                <option value="3">Col 3</option>
+                                                <option value="4">Col 4</option>
+                                                <option value="5" selected>Col 5</option>
+                                            </select>
+                                            <input type="text" id="an54-m1-fec" value="25/09/2026" class="col-span-2 border                         border-gray-200 p-1 rounded">
+                                        </div>
+                        
+                                        <!-- Fila 2 -->
+                                        <div class="grid grid-cols-12 gap-1">
+                                            <input type="text" id="an54-m2-act" value="Pruebas de API" class="col-span-3 border                         border-gray-200 p-1 rounded">
+                                            <input type="text" id="an54-m2-ev" value="Reporte Postman" class="col-span-3 border                         border-gray-200 p-1 rounded">
+                                            <input type="number" id="an54-m2-hrs" value="20" class="col-span-2 border border-gray-200 p-1                         rounded text-center">
+                                            <select id="an54-m2-niv" class="col-span-2 border border-gray-200 p-1 rounded text-center">
+                                                <option value="1">Col 1</option>
+                                                <option value="2">Col 2</option>
+                                                <option value="3">Col 3</option>
+                                                <option value="4">Col 4</option>
+                                                <option value="5" selected>Col 5</option>
+                                            </select>
+                                            <input type="text" id="an54-m2-fec" value="25/09/2026" class="col-span-2 border                         border-gray-200 p-1 rounded">
+                                        </div>
+                        
+                                        <!-- Fila 3 -->
+                                        <div class="grid grid-cols-12 gap-1">
+                                            <input type="text" id="an54-m3-act" value="" class="col-span-3 border border-gray-200 p-1                         rounded">
+                                            <input type="text" id="an54-m3-ev" value="" class="col-span-3 border border-gray-200 p-1                         rounded">
+                                            <input type="number" id="an54-m3-hrs" value="" class="col-span-2 border border-gray-200 p-1                         rounded text-center">
+                                            <select id="an54-m3-niv" class="col-span-2 border border-gray-200 p-1 rounded text-center">
+                                                <option value="0">-</option>
+                                                <option value="1">Col 1</option>
+                                                <option value="2">Col 2</option>
+                                                <option value="3">Col 3</option>
+                                                <option value="4">Col 4</option>
+                                                <option value="5">Col 5</option>
+                                            </select>
+                                            <input type="text" id="an54-m3-fec" value="" class="col-span-2 border border-gray-200 p-1                         rounded">
+                                        </div>
+                                    </div>
+                        
+                                    <!-- Campo oculto de observaciones para mantener compatibilidad con api/anexo54.php -->
+                                    <input type="hidden" id="an54-observaciones" name="observaciones" value="Reporte generado conforme al                         formato oficial 2026.">
+                                </div>
+                        
+                                <!-- Botón para guardar en Base de Datos / PHP -->
+                                <div class="flex gap-4 pt-2">
+                                    <button type="submit" class="bg-tecnm-blue hover:bg-tecnm-dark text-white font-bold px-4 py-2                         rounded-lg transition">
+                                        <i class="fa-solid fa-floppy-disk mr-1"></i> Guardar Anexo 5.4 en BD y Generar PDF
                                     </button>
                                 </div>
                         
                             </form>
                         
-                            <!-- Vista previa dinámica -->
-                            <div id="preview-anexo54" class="mt-6 p-4 border rounded bg-gray-50">
-                                <h3 class="font-bold mb-2">Vista Previa Impresión (Borrador Dinámico)</h3>
-                                <p>Escribe en el formulario y presiona "Actualizar Vista Previa".</p>
-                            </div>
                         </div>
-                        
-                        <script>
-                            function actualizarVistaPrevia() {
-                                const periodo = document.getElementById('an54-periodo').value;
-                                const horas = document.getElementById('an54-horas').value;
-                                const descripcion = document.getElementById('an54-descripcion').value;
-                                const observaciones = document.getElementById('an54-observaciones').value;
-                        
-                                document.getElementById('preview-anexo54').innerHTML = `
-                                    <h3 class="font-bold mb-2">Vista Previa Impresión (Borrador Dinámico)</h3>
-                                    <p><strong>Periodo Reportado:</strong> ${periodo}</p>
-                                    <p><strong>Horas en Periodo:</strong> ${horas}</p>
-                                    <p><strong>Actividades Realizadas:</strong> ${descripcion}</p>
-                                    <p><strong>Observaciones:</strong> ${observaciones}</p>
-                                `;
-                            }
-                        </script>
 
                         <!-- FORMULARIO ANEXO 5.5 -->
                         <div id="form-anexo-55-campos" class="hidden space-y-4 text-xs">

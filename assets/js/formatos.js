@@ -186,40 +186,157 @@ function actualizarPrevisualizacionFormatos() {
             </div>
         `;
     } else if (tipoAnexo === "5.4") {
-        const per = document.getElementById('an54-periodo').value;
-        const horas = document.getElementById('an54-horas').value;
-        const desc = document.getElementById('an54-descripcion').value;
-        const obs = document.getElementById('an54-observaciones').value;
+        const numReporte = document.getElementById('an54-num-reporte').value;
+        const fecha      = document.getElementById('an54-fecha').value;
+        const per        = document.getElementById('an54-periodo').value;
+        const proyecto   = document.getElementById('an54-proyecto').value;
+        const ueInput    = document.getElementById('an54-ue').value;
+        const ueNombre   = ueInput.trim() !== '' ? ueInput : (emp ? emp.nombre : 'S/A');
+        const ie         = document.getElementById('an54-ie').value;
+        const programa   = document.getElementById('an54-programa').value;
+
+        const telEst     = document.getElementById('an54-tel-est').value;
+        const telUe      = document.getElementById('an54-tel-ue').value;
+        const telAcad    = document.getElementById('an54-tel-acad').value;
+
+        const comp1Nom   = document.getElementById('an54-comp1-nom').value;
+        const comp1Asig  = document.getElementById('an54-comp1-asig').value;
+        const comp2Nom   = document.getElementById('an54-comp2-nom').value;
+        const comp2Asig  = document.getElementById('an54-comp2-asig').value;
+        const comp3Nom   = document.getElementById('an54-comp3-nom').value;
+        const comp3Asig  = document.getElementById('an54-comp3-asig').value;
+        const comp4Nom   = document.getElementById('an54-comp4-nom').value;
+        const comp4Asig  = document.getElementById('an54-comp4-asig').value;
+
+        const marco      = document.getElementById('an54-marco').value;
+        const desc       = document.getElementById('an54-descripcion').value;
+        const evalComp   = document.getElementById('an54-eval-comp').value;
+
+        const nd1        = document.getElementById('an54-nd-1').value;
+        const nd2        = document.getElementById('an54-nd-2').value;
+        const nd3        = document.getElementById('an54-nd-3').value;
+        const nd4        = document.getElementById('an54-nd-4').value;
+        const nd5        = document.getElementById('an54-nd-5').value;
+
+        const renderFilaMatriz = (idx) => {
+            const act = document.getElementById(`an54-m${idx}-act`).value;
+            const ev  = document.getElementById(`an54-m${idx}-ev`).value;
+            const hrs = document.getElementById(`an54-m${idx}-hrs`).value;
+            const niv = parseInt(document.getElementById(`an54-m${idx}-niv`).value) || 0;
+            const fec = document.getElementById(`an54-m${idx}-fec`).value;
+            const mentorNombre = mentUe ? mentUe.nombre : '';
+
+            return `
+                <tr>
+                    <td>${act}</td>
+                    <td>${ev}</td>
+                    <td style="text-align:center">${hrs}</td>
+                    <td style="text-align:center;font-weight:bold">${niv === 1 ? 'X' : ''}</td>
+                    <td style="text-align:center;font-weight:bold">${niv === 2 ? 'X' : ''}</td>
+                    <td style="text-align:center;font-weight:bold">${niv === 3 ? 'X' : ''}</td>
+                    <td style="text-align:center;font-weight:bold">${niv === 4 ? 'X' : ''}</td>
+                    <td style="text-align:center;font-weight:bold">${niv === 5 ? 'X' : ''}</td>
+                    <td style="text-align:center;font-size:7.5pt">${act ? `${mentorNombre}<br>${fec}` : ''}</td>
+                </tr>
+            `;
+        };
 
         previewPapel.innerHTML = `
             <div class="doc-header">"2026. Año del Humanismo Mexicano en el Estado de México".</div>
             <div class="doc-title">ANEXO 5.4</div>
-            <div class="doc-subtitle">REPORTE DE ACTIVIDADES DE APRENDIZAJE</div>
+            <div class="doc-subtitle">REPORTE DE ACTIVIDADES DEL ESTUDIANTE DUAL</div>
 
-            <div class="field-line"><strong>Estudiante:</strong> ${est.nombre}</div>
-            <div class="field-line"><strong>Periodo Reportado:</strong> ${per}</div>
-            <div class="field-line"><strong>Empresa:</strong> ${emp ? emp.nombre : 'S/A'}</div>
-            <div class="field-line"><strong>Horas en Periodo:</strong> ${horas} Horas</div>
+            <div class="section-label">1.- DATOS GENERALES</div>
+            <div class="field-line">
+                <strong>Número de Reporte:</strong> ${numReporte} &nbsp;&nbsp;&nbsp;
+                <strong>Fecha de Elaboración:</strong> ${fecha} &nbsp;&nbsp;&nbsp;
+                <strong>Periodo del Reporte:</strong> ${per}
+            </div>
+            <div class="field-line"><strong>Nombre del Proyecto o Plan de Rotación:</strong> ${proyecto}</div>
+            <div class="field-line"><strong>Unidad Económica:</strong> ${ueNombre}</div>
+            <div class="field-line"><strong>Institución Educativa:</strong> ${ie}</div>
+            <div class="field-line"><strong>Programa Educativo:</strong> ${programa}</div>
+            <div class="field-line">
+                <strong>Nombre del Estudiante Dual:</strong> ${est.nombre} &nbsp;&nbsp;&nbsp;
+                <strong>No. Teléfono:</strong> ${telEst}
+            </div>
+            <div class="field-line">
+                <strong>Nombre del Mentor de la UE:</strong> ${mentUe ? mentUe.nombre : 'S/A'} &nbsp;&nbsp;&nbsp;
+                <strong>No. Teléfono:</strong> ${telUe}
+            </div>
+            <div class="field-line">
+                <strong>Nombre del Mentor Académico:</strong> ${mentAcad ? mentAcad.nombre : 'S/A'} &nbsp;&nbsp;&nbsp;
+                <strong>No. Teléfono:</strong> ${telAcad}
+            </div>
 
-            <div class="section-label">Actividades Realizadas:</div>
+            <div class="section-label">2.- DESARROLLO DE COMPETENCIAS</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:8%">No.</th>
+                        <th style="width:46%">COMPETENCIAS A DESARROLLAR</th>
+                        <th style="width:46%">ASIGNATURAS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="text-align:center">1</td><td>${comp1Nom}</td><td>${comp1Asig}</td></tr>
+                    <tr><td style="text-align:center">2</td><td>${comp2Nom}</td><td>${comp2Asig}</td></tr>
+                    <tr><td style="text-align:center">3</td><td>${comp3Nom}</td><td>${comp3Asig}</td></tr>
+                    <tr><td style="text-align:center">4</td><td>${comp4Nom}</td><td>${comp4Asig}</td></tr>
+                </tbody>
+            </table>
+
+            <div class="section-label" style="text-align:center">MARCO TEÓRICO O ANTECEDENTES</div>
+            <div class="desc-box">${marco}</div>
+
+            <div class="section-label" style="text-align:center">DESCRIPCIÓN DE LAS ACTIVIDADES REALIZADAS</div>
             <div class="desc-box">${desc}</div>
 
-            <div class="section-label">Observaciones del Estudiante / Facilitador:</div>
-            <div class="desc-box">${obs}</div>
+            <div class="section-label">3.- EVALUACIÓN DE LA UE</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="9">MATRIZ DE EVALUACIÓN POR COMPETENCIA</th>
+                    </tr>
+                    <tr>
+                        <th style="width:18%">COMPETENCIA</th>
+                        <td colspan="7" style="font-weight:bold;text-align:left">${evalComp}</td>
+                        <th rowspan="3" style="width:18%;vertical-align:middle;font-size:7pt">
+                            NOMBRE, FIRMA Y FECHA DE EVALUACIÓN DEL MENTOR DE LA UE
+                        </th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2" style="vertical-align:middle">ACTIVIDADES</th>
+                        <th rowspan="2" style="vertical-align:middle;width:18%">EVIDENCIAS O PRODUCTOS</th>
+                        <th rowspan="2" style="vertical-align:middle;width:10%">HORAS DE DEDICACIÓN</th>
+                        <th colspan="5">NIVEL DE DESEMPEÑO</th>
+                    </tr>
+                    <tr>
+                        <th style="font-size:6.5pt;width:7%">${nd1}</th>
+                        <th style="font-size:6.5pt;width:7%">${nd2}</th>
+                        <th style="font-size:6.5pt;width:7%">${nd3}</th>
+                        <th style="font-size:6.5pt;width:7%">${nd4}</th>
+                        <th style="font-size:6.5pt;width:7%">${nd5}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${renderFilaMatriz(1)}
+                    ${renderFilaMatriz(2)}
+                    ${renderFilaMatriz(3)}
+                </tbody>
+            </table>
 
-            <div class="signature-block" style="margin-top:30px">
-                <div style="display:flex;justify-content:space-between;gap:20px">
+            <div class="signature-block" style="margin-top:28px">
+                <div style="display:flex;justify-content:space-between;gap:40px">
                     <div style="flex:1;text-align:center">
-                        <div class="sig-line">FIRMA DEL ESTUDIANTE</div>
+                        <div style="font-weight:bold;margin-bottom:25px">ELABORÓ</div>
+                        <div class="sig-line">NOMBRE Y FIRMA<br>ESTUDIANTE DUAL</div>
                         <div class="sig-role">${est.nombre}</div>
                     </div>
                     <div style="flex:1;text-align:center">
-                        <div class="sig-line">Vo.BO. MENTOR ACADÉMICO</div>
+                        <div style="font-weight:bold;margin-bottom:25px">AUTORIZÓ</div>
+                        <div class="sig-line">NOMBRE Y FIRMA<br>MENTOR ACADÉMICO</div>
                         <div class="sig-role">${mentAcad ? mentAcad.nombre : 'S/A'}</div>
-                    </div>
-                    <div style="flex:1;text-align:center">
-                        <div class="sig-line">FIRMA MENTOR UE</div>
-                        <div class="sig-role">${mentUe ? mentUe.nombre : 'S/A'}</div>
                     </div>
                 </div>
             </div>
@@ -364,5 +481,54 @@ function renderHistorialFirmas(est) {
                 <span class="text-xs text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> Subido</span>
             </div>
         `).join('');
+    }
+}
+
+// ============================================================
+// ACTUALIZACIÓN EN TIEMPO REAL AL ESCRIBIR EN CUADROS DE TEXTO
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    const seccionFormatos = document.getElementById('tab-formatos');
+    if (seccionFormatos) {
+        seccionFormatos.addEventListener('input', (e) => {
+            if (e.target.matches('input, textarea, select')) {
+                actualizarPrevisualizacionFormatos();
+            }
+        });
+    }
+});
+
+// ============================================================
+// GUARDAR ANEXO 5.4 EN MYSQL Y GENERAR PDF
+// ============================================================
+async function guardarAnexo54(event) {
+    event.preventDefault();
+
+    const estId = document.getElementById('selector-formato-estudiante').value;
+    if (!estId) {
+        showToast('Selecciona un estudiante primero', 'error');
+        return;
+    }
+
+    const formData = new FormData(document.getElementById('form-anexo54-db'));
+    formData.append('estudiante_id', estId);
+
+    try {
+        const res = await fetch(API_BASE + 'anexo54.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+            showToast(data.message);
+            // Abre la ventana de impresión/PDF con los datos ya reflejados
+            generarImpresionAnexo();
+        } else {
+            showToast(data.error || 'Error al guardar el Anexo 5.4', 'error');
+        }
+    } catch (error) {
+        console.error(error);
+        showToast('Error de conexión con el servidor', 'error');
     }
 }
