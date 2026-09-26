@@ -558,42 +558,73 @@
                             </div>
                         </div>
 
-                        <!-- FORMULARIO ANEXO 5.4 -->
-                        <form action="api/anexo54.php" method="POST" class="space-y-4 text-xs bg-white p-6 rounded-xl shadow-sm border                         border-gray-100">
-                            
-                            <!-- Periodo y horas -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label for="an54-periodo" class="block text-gray-600 font-semibold mb-1">Periodo del Reporte:</label>
-                                    <input type="text" id="an54-periodo" name="periodo" value="Semana 1 a 4" class="w-full border                         border-gray-200 p-2 rounded-lg">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <h4 class="font-bold text-gray-800 mb-4 border-b border-gray-100 pb-2">
+                                Datos de Llenado - Anexo 5.4
+                            </h4>
+                        
+                            <!-- FORMULARIO ANEXO 5.4 -->
+                            <form action="api/anexo54.php" method="POST" class="space-y-4 text-xs">
+                                
+                                <!-- Periodo y horas -->
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="an54-periodo" class="block text-gray-600 font-semibold mb-1">Periodo del Reporte:</                        label>
+                                        <input type="text" id="an54-periodo" name="periodo" class="w-full border p-2 rounded-lg">
+                                    </div>
+                                    <div>
+                                        <label for="an54-horas" class="block text-gray-600 font-semibold mb-1">Horas Acumuladas en este                         Periodo:</label>
+                                        <input type="number" id="an54-horas" name="horas" class="w-full border p-2 rounded-lg">
+                                    </div>
                                 </div>
+                        
+                                <!-- Descripción -->
                                 <div>
-                                    <label for="an54-horas" class="block text-gray-600 font-semibold mb-1">Horas Acumuladas en este                         Periodo:</label>
-                                    <input type="number" id="an54-horas" name="horas" value="40" class="w-full border border-gray-200 p-2                         rounded-lg">
+                                    <label for="an54-descripcion" class="block text-gray-600 font-semibold mb-1">Descripción detallada de                         actividades desarrolladas:</label>
+                                    <textarea id="an54-descripcion" name="descripcion" rows="4" class="w-full border p-2 rounded-lg"></                        textarea>
                                 </div>
+                        
+                                <!-- Observaciones -->
+                                <div>
+                                    <label for="an54-observaciones" class="block text-gray-600 font-semibold mb-1">Observaciones /                         Comentarios del Estudiante:</label>
+                                    <input type="text" id="an54-observaciones" name="observaciones" class="w-full border p-2 rounded-lg">
+                                </div>
+                        
+                                <!-- Botones -->
+                                <div class="flex gap-4">
+                                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                                        Generar Anexo 5.4
+                                    </button>
+                                    <button type="button" onclick="actualizarVistaPrevia()" class="bg-gray-500 text-white px-4 py-2                         rounded">
+                                        Actualizar Vista Previa del Formato
+                                    </button>
+                                </div>
+                        
+                            </form>
+                        
+                            <!-- Vista previa dinámica -->
+                            <div id="preview-anexo54" class="mt-6 p-4 border rounded bg-gray-50">
+                                <h3 class="font-bold mb-2">Vista Previa Impresión (Borrador Dinámico)</h3>
+                                <p>Escribe en el formulario y presiona "Actualizar Vista Previa".</p>
                             </div>
+                        </div>
                         
-                            <!-- Descripción -->
-                            <div>
-                                <label for="an54-descripcion" class="block text-gray-600 font-semibold mb-1">Descripción detallada de                         actividades desarrolladas:</label>
-                                <textarea id="an54-descripcion" name="descripcion" rows="4" class="w-full border border-gray-200 p-2                         rounded-lg">
-                                    Modelado de bases de datos para el módulo de despacho.
-                                    Pruebas unitarias de las APIs y documentación del proyecto.
-                                </textarea>
-                            </div>
+                        <script>
+                            function actualizarVistaPrevia() {
+                                const periodo = document.getElementById('an54-periodo').value;
+                                const horas = document.getElementById('an54-horas').value;
+                                const descripcion = document.getElementById('an54-descripcion').value;
+                                const observaciones = document.getElementById('an54-observaciones').value;
                         
-                            <!-- Observaciones -->
-                            <div>
-                                <label for="an54-observaciones" class="block text-gray-600 font-semibold mb-1">Observaciones / Comentarios                         del Estudiante:</label>
-                                <input type="text" id="an54-observaciones" name="observaciones" value="Sin contratiempos. Mentor de la UE                         brindó las facilidades necesarias." class="w-full border border-gray-200 p-2 rounded-lg">
-                            </div>
-                        
-                            <!-- Botón -->
-                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
-                                Generar Anexo 5.4
-                            </button>
-                        
-                        </form>
+                                document.getElementById('preview-anexo54').innerHTML = `
+                                    <h3 class="font-bold mb-2">Vista Previa Impresión (Borrador Dinámico)</h3>
+                                    <p><strong>Periodo Reportado:</strong> ${periodo}</p>
+                                    <p><strong>Horas en Periodo:</strong> ${horas}</p>
+                                    <p><strong>Actividades Realizadas:</strong> ${descripcion}</p>
+                                    <p><strong>Observaciones:</strong> ${observaciones}</p>
+                                `;
+                            }
+                        </script>
 
                         <!-- FORMULARIO ANEXO 5.5 -->
                         <div id="form-anexo-55-campos" class="hidden space-y-4 text-xs">
