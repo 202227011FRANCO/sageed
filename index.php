@@ -559,26 +559,41 @@
                         </div>
 
                         <!-- FORMULARIO ANEXO 5.4 -->
-                        <div id="form-anexo-54-campos" class="hidden space-y-4 text-xs">
+                        <form action="api/anexo54.php" method="POST" class="space-y-4 text-xs bg-white p-6 rounded-xl shadow-sm border                         border-gray-100">
+                            
+                            <!-- Periodo y horas -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-gray-600 font-semibold mb-1">Periodo del Reporte:</label>
-                                    <input type="text" id="an54-periodo" value="Semana 1 a 4" class="w-full border border-gray-200 p-2 rounded-lg">
+                                    <label for="an54-periodo" class="block text-gray-600 font-semibold mb-1">Periodo del Reporte:</label>
+                                    <input type="text" id="an54-periodo" name="periodo" value="Semana 1 a 4" class="w-full border                         border-gray-200 p-2 rounded-lg">
                                 </div>
                                 <div>
-                                    <label class="block text-gray-600 font-semibold mb-1">Horas Acumuladas en este Periodo:</label>
-                                    <input type="number" id="an54-horas" value="40" class="w-full border border-gray-200 p-2 rounded-lg">
+                                    <label for="an54-horas" class="block text-gray-600 font-semibold mb-1">Horas Acumuladas en este                         Periodo:</label>
+                                    <input type="number" id="an54-horas" name="horas" value="40" class="w-full border border-gray-200 p-2                         rounded-lg">
                                 </div>
                             </div>
+                        
+                            <!-- Descripción -->
                             <div>
-                                <label class="block text-gray-600 font-semibold mb-1">Descripción detallada de actividades desarrolladas:</label>
-                                <textarea id="an54-descripcion" rows="4" class="w-full border border-gray-200 p-2 rounded-lg">Modelado de bases de datos para el módulo de despacho. Pruebas unitarias de las APIs y documentación del proyecto.</textarea>
+                                <label for="an54-descripcion" class="block text-gray-600 font-semibold mb-1">Descripción detallada de                         actividades desarrolladas:</label>
+                                <textarea id="an54-descripcion" name="descripcion" rows="4" class="w-full border border-gray-200 p-2                         rounded-lg">
+                                    Modelado de bases de datos para el módulo de despacho.
+                                    Pruebas unitarias de las APIs y documentación del proyecto.
+                                </textarea>
                             </div>
+                        
+                            <!-- Observaciones -->
                             <div>
-                                <label class="block text-gray-600 font-semibold mb-1">Observaciones / Comentarios del Estudiante:</label>
-                                <input type="text" id="an54-observaciones" value="Sin contratiempos. Mentor de la UE brindó las facilidades necesarias." class="w-full border border-gray-200 p-2 rounded-lg">
+                                <label for="an54-observaciones" class="block text-gray-600 font-semibold mb-1">Observaciones / Comentarios                         del Estudiante:</label>
+                                <input type="text" id="an54-observaciones" name="observaciones" value="Sin contratiempos. Mentor de la UE                         brindó las facilidades necesarias." class="w-full border border-gray-200 p-2 rounded-lg">
                             </div>
-                        </div>
+                        
+                            <!-- Botón -->
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                                Generar Anexo 5.4
+                            </button>
+                        
+                        </form>
 
                         <!-- FORMULARIO ANEXO 5.5 -->
                         <div id="form-anexo-55-campos" class="hidden space-y-4 text-xs">
