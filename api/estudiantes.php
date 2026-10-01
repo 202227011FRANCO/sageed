@@ -33,10 +33,11 @@ switch ($method) {
             ':nombre' => $data['nombre'],
             ':genero' => $data['genero'],
             ':carrera' => $data['carrera'],
-            ':empresa_id' => $data['empresaId'],
-            ':mentor_acad_id' => $data['mentorAcadId'],
-            ':mentor_ue_id' => $data['mentorUeId'],
-            ':tipo_ingreso' => $data['tipoIngreso']
+            // CORRECCIÓN: Se cambiaron a los nombres exactos que envía el JS
+            ':empresa_id' => $data['empresa_id'], 
+            ':mentor_acad_id' => $data['mentor_acad_id'],
+            ':mentor_ue_id' => $data['mentor_ue_id'],
+            ':tipo_ingreso' => $data['tipo_ingreso']
         ]);
         jsonResponse(['id' => $db->lastInsertId(), 'mensaje' => 'Estudiante registrado'], 201);
         break;

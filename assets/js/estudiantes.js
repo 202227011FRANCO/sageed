@@ -1,110 +1,116 @@
-//  ESTUDIANTES 
+// Variable global para guardar los estudiantes
+let todosLosEstudiantes = [];
 
+// 1. Obtener datos de la API
 async function renderEstudiantes() {
-    if (!DB.estudiantes.length) await cargarDatosGlobales();
-    filtrarEstudiantes(); // Reutilizamos la función de filtrado para renderizar
+    console.log("1. Intentando cargar estudiantes...");
+    const tbody = document.getElementById('tabla-estudiantes-body');
+    
+    try {
+        const response = await fetch('api/estudiantes.php');
+        console.log("2. Respuesta recibida del servidor:", response);
+        
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        
+        todosLosEstudiantes = await response.json();
+        console.log("3. Datos convertidos a JSON:", todosLosEstudiantes);
+        
+        pintarTablaEstudiantes(todosLosEstudiantes);
+    } catch (error) {
+        console.error("Error al cargar estudiantes:", error);
+        if (tbody) {
+            tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-red-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Error cargando datos: Revisa la consola (F12)</td></tr>`;
+        }
+    }
 }
 
-function filtrarEstudiantes() {
-    const busqueda = document.getElementById('buscar-estudiante').value.toLowerCase();
-    const filtroEstatus = document.getElementById('filtro-estatus').value;
+// 2. Dibujar las filas en el HTML
+function pintarTablaEstudiantes(estudiantes) {
     const tbody = document.getElementById('tabla-estudiantes-body');
+    tbody.innerHTML = ''; // Limpiar tabla
 
-    const filtrados = DB.estudiantes.filter(est => {
-        const coincideTexto = est.nombre.toLowerCase().includes(busqueda) || est.control.toLowerCase().includes(busqueda);
-        const coincideEstatus = filtroEstatus === 'TODOS' || est.estatus === filtroEstatus;
+    if (!Array.isArray(estudiantes) || estudiantes.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-8 text-center text-gray-500 italic">No hay estudiantes registrados.</td></tr>';
+        return;
+    }
+
+    estudiantes.forEach(est => {
+        const bgEstatus = est.estatus === 'ACTIVO' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-800';
+        const iconoGenero = est.genero === 'H' 
+            ? '<i class="fa-solid fa-mars text-sky-500 w-4"></i>' 
+            : '<i class="fa-solid fa-venus text-pink-500 w-4"></i>';
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-gray-50 transition-colors";
+        tr.innerHTML = `
+            <td class="px-6 py-4">
+                <div class="font-bold text-gray-800">${est.nombre}</div>
+                <div class="text-[11px] text-gray-500 mt-0.5">Ctrl: <span class="font-semibold">${est.control}</span> | CURP: ${est.curp || 'S/N'}</div>
+            </td>
+            <td class="px-6 py-4 text-xs">
+                <div class="font-medium text-gray-700 flex items-center gap-1.5">${iconoGenero} ${est.carrera}</div>
+            </td>
+            <td class="px-6 py-4 text-xs text-gray-700">
+                <i class="fa-solid fa-building text-tecnm-gold mr-1.5"></i> ${est.empresa_nombre || '<span class="text-red-400">Sin asignar</span>'}
+            </td>
+            <td class="px-6 py-4 text-xs">
+                <span class="bg-blue-50 text-tecnm-blue px-2.5 py-1 rounded-md font-semibold border border-blue-100">${est.tipo_ingreso}</span>
+            </td>
+            <td class="px-6 py-4 text-xs">
+                <span class="px-2.5 py-1 rounded-full font-bold ${bgEstatus}">${est.estatus}</span>
+            </td>
+            <td class="px-6 py-4 text-right text-xs">
+                <button class="text-tecnm-blue hover:text-tecnm-dark mr-3 transition" title="Editar Expediente"><i class="fa-solid fa-pen-to-square text-base"></i></button>
+                <button class="text-red-500 hover:text-red-700 transition" title="Dar de Baja"><i class="fa-solid fa-trash-can text-base"></i></button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// 3. Sistema de Búsqueda y Filtros
+function filtrarEstudiantes() {
+    const textoBuscado = document.getElementById('buscar-estudiante').value.toLowerCase();
+    const estatusFiltro = document.getElementById('filtro-estatus').value;
+
+    const filtrados = todosLosEstudiantes.filter(est => {
+        const coincideTexto = est.nombre.toLowerCase().includes(textoBuscado) || est.control.toLowerCase().includes(textoBuscado);
+        const coincideEstatus = estatusFiltro === 'TODOS' || est.estatus === estatusFiltro;
         return coincideTexto && coincideEstatus;
     });
 
-    tbody.innerHTML = filtrados.map(est => {
-        const empresa = DB.empresas.find(e => e.id == est.empresa_id);
-        const nombreEmpresa = empresa ? empresa.nombre : '<span class="text-gray-400 italic">Sin asignar</span>';
-        
-        return `
-            <tr class="hover:bg-gray-50 transition">
-                <td class="px-6 py-4">
-                    <div class="font-bold text-gray-800">${est.nombre}</div>
-                    <div class="text-[10px] text-gray-500 mt-0.5">Control: ${est.control}</div>
-                    <div class="text-[10px] text-gray-500">CURP: ${est.curp || 'N/A'}</div>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="text-xs text-gray-700">${est.carrera}</div>
-                    <div class="text-[10px] text-gray-500 mt-0.5"><i class="fa-solid ${est.genero === 'H' ? 'fa-mars text-sky-500' : 'fa-venus text-pink-500'}"></i> ${est.genero === 'H' ? 'Hombre' : 'Mujer'}</div>
-                </td>
-                <td class="px-6 py-4 text-xs font-semibold text-gray-700">${nombreEmpresa}</td>
-                <td class="px-6 py-4">
-                    <span class="px-2 py-1 text-[10px] rounded font-bold ${est.tipo_ingreso === 'Ingreso' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">
-                        ${est.tipo_ingreso}
-                    </span>
-                </td>
-                <td class="px-6 py-4 text-center">
-                    <i class="fa-solid fa-file-pdf text-gray-300 text-lg" title="Sin convenio subido"></i>
-                </td>
-                <td class="px-6 py-4">
-                    <span class="px-2 py-1 text-[10px] rounded font-bold ${est.estatus === 'ACTIVO' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}">
-                        ${est.estatus}
-                    </span>
-                </td>
-                <td class="px-6 py-4 text-right">
-                    <button class="text-blue-600 hover:text-blue-800 text-xs font-semibold px-2 py-1 rounded hover:bg-blue-50 transition"><i class="fa-solid fa-pen-to-square"></i> Editar</button>
-                </td>
-            </tr>
-        `;
-    }).join('');
+    pintarTablaEstudiantes(filtrados);
 }
 
-async function cargarSelectoresEstudiante() {
-    await cargarDatosGlobales();
-    
-    const selectEmpresa = document.getElementById('est-empresa');
-    if (selectEmpresa) {
-        selectEmpresa.innerHTML = DB.empresas.map(e => `<option value="${e.id}">${e.nombre}</option>`).join('');
-    }
-    
-    const selectMentorAcad = document.getElementById('est-mentor-acad');
-    if (selectMentorAcad) {
-        selectMentorAcad.innerHTML = DB.mentoresAcad.map(m => `<option value="${m.id}">${m.nombre} (${m.area})</option>`).join('');
-    }
-
-    const selectMentorUe = document.getElementById('est-mentor-ue');
-    if (selectMentorUe) {
-        selectMentorUe.innerHTML = DB.mentoresUe.map(m => `<option value="${m.id}">${m.nombre} - ${m.cargo}</option>`).join('');
-    }
-}
-
+// 4. Guardar un Estudiante Nuevo
 async function guardarEstudiante(e) {
     e.preventDefault();
     
-    // El objeto 'nuevo' debe tener los mismos nombres de clave que espera api/estudiantes.php
-    const nuevo = {
-        control: document.getElementById('est-control').value,
-        curp: document.getElementById('est-curp').value.toUpperCase(), // Captura y convierte a mayúsculas
+    const datos = {
         nombre: document.getElementById('est-nombre').value,
+        control: document.getElementById('est-control').value,
+        curp: document.getElementById('est-curp').value.toUpperCase(),
         genero: document.getElementById('est-genero').value,
         carrera: document.getElementById('est-carrera').value,
-        empresaId: document.getElementById('est-empresa').value,
-        mentorAcadId: document.getElementById('est-mentor-acad').value,
-        mentorUeId: document.getElementById('est-mentor-ue').value,
-        tipoIngreso: document.getElementById('est-tipo-ingreso').value
+        tipo_ingreso: document.getElementById('est-tipo-ingreso').value,
+        empresa_id: document.getElementById('est-empresa').value,
+        mentor_acad_id: document.getElementById('est-mentor-acad').value,
+        mentor_ue_id: document.getElementById('est-mentor-ue').value
     };
 
-    const res = await fetch(API_BASE + 'estudiantes.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(nuevo)
-    });
+    try {
+        const res = await fetch('api/estudiantes.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
+        });
 
-    if (res.ok) {
-        showToast('Estudiante registrado con éxito.');
-        closeModal('estudiante');
-        document.getElementById('form-estudiante-data').reset();
-        
-        // Refrescar los datos globales y la tabla si la función existe
-        await cargarDatosGlobales();
-        if (typeof renderEstudiantes === 'function') {
-            renderEstudiantes();
+        if (res.ok) {
+            closeModal('estudiante');
+            document.getElementById('form-estudiante-data').reset();
+            await renderEstudiantes();
         }
-    } else {
-        showToast('Error al registrar estudiante', 'error');
+    } catch (error) {
+        console.error("Error al guardar:", error);
     }
 }

@@ -318,15 +318,61 @@
     <script src="assets/js/empresas.js"></script>
     <script src="assets/js/mentores.js"></script>
     <script src="assets/js/estudiantes.js"></script>
-
-    <!-- INICIALIZADOR DE LA PÁGINA -->
+    
+<!-- INICIALIZADOR DE LA PÁGINA -->
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // Cargar los datos y pintar la tabla de estudiantes al abrir la página
+            // 1. Pintar la tabla de estudiantes
             if (typeof renderEstudiantes === 'function') {
                 await renderEstudiantes();
             }
+            // 2. Llenar las listas desplegables (Empresas y Mentores)
+            await cargarSelectoresEstudiante();
         });
+
+        // Función que trae los datos de la Base de Datos y llena los <select>
+        async function cargarSelectoresEstudiante() {
+            try {
+                // Llenar Empresas
+                const resEmp = await fetch('api/empresas.php');
+                if (resEmp.ok) {
+                    const empresas = await resEmp.json();
+                    const selectEmp = document.getElementById('est-empresa');
+                    selectEmp.innerHTML = '<option value="" disabled selected>-- Selecciona una empresa --</option>';
+                    if (Array.isArray(empresas)) {
+                        empresas.forEach(emp => {
+                            selectEmp.innerHTML += `<option value="${emp.id}">${emp.nombre}</option>`;
+                        });
+                    }
+                }
+
+                // Llenar Mentores Académicos
+                const resAcad = await fetch('api/mentores_academicos.php');
+                if (resAcad.ok) {
+                    const mentoresAcad = await resAcad.json();
+                    const selectAcad = document.getElementById('est-mentor-acad');
+                    selectAcad.innerHTML = '<option value="" disabled selected>-- Selecciona un docente --</option>';
+                    if (Array.isArray(mentoresAcad)) {
+                        mentoresAcad.forEach(m => {
+                            selectAcad.innerHTML += `<option value="${m.id}">${m.nombre}</option>`;
+                        });
+                    }
+                }
+
+                // Llenar Mentores Empresa (UE)
+                const resUe = await fetch('api/mentores_ue.php');
+                if (resUe.ok) {
+                    const mentoresUe = await resUe.json();
+                    const selectUe = document.getElementById('est-mentor-ue');
+                    selectUe.innerHTML = '<option value="" disabled selected>-- Selecciona un mentor --</option>';
+                    if (Array.isArray(mentoresUe)) {
+                        mentoresUe.forEach(m => {
+                            selectUe.innerHTML += `<option value="${m.id}">${m.nombre}</option>`;
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Error al cargar las listas:", error);
+            }
+        }
     </script>
-</body>
-</html>
