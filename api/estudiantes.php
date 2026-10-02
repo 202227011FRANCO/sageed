@@ -24,18 +24,20 @@ switch ($method) {
     case 'POST':
         $data = json_decode(file_get_contents('php://input'), true);
         $stmt = $db->prepare("
-            INSERT INTO estudiantes (control, nombre, genero, carrera, empresa_id, mentor_acad_id, mentor_ue_id, tipo_ingreso, estatus)
-            VALUES (:control, :nombre, :genero, :carrera, :empresa_id, :mentor_acad_id, :mentor_ue_id, :tipo_ingreso, 'ACTIVO')
+            INSERT INTO estudiantes (control, curp, nombre, genero, carrera, empresa_id, mentor_acad_id, mentor_ue_id, tipo_ingreso, estatus)
+            VALUES (:control, :curp, :nombre, :genero, :carrera, :empresa_id, :mentor_acad_id, :mentor_ue_id, :tipo_ingreso, 'ACTIVO')
         ");
         $stmt->execute([
             ':control' => $data['control'],
+            ':curp' => $data['curp'],
             ':nombre' => $data['nombre'],
             ':genero' => $data['genero'],
             ':carrera' => $data['carrera'],
-            ':empresa_id' => $data['empresaId'],
-            ':mentor_acad_id' => $data['mentorAcadId'],
-            ':mentor_ue_id' => $data['mentorUeId'],
-            ':tipo_ingreso' => $data['tipoIngreso']
+            // CORRECCIÓN: Se cambiaron a los nombres exactos que envía el JS
+            ':empresa_id' => $data['empresa_id'], 
+            ':mentor_acad_id' => $data['mentor_acad_id'],
+            ':mentor_ue_id' => $data['mentor_ue_id'],
+            ':tipo_ingreso' => $data['tipo_ingreso']
         ]);
         jsonResponse(['id' => $db->lastInsertId(), 'mensaje' => 'Estudiante registrado'], 201);
         break;

@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS mentores_ue (
 CREATE TABLE IF NOT EXISTS estudiantes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     control VARCHAR(20) NOT NULL UNIQUE,
+    curp VARCHAR(18) NOT NULL, 
     nombre VARCHAR(255) NOT NULL,
     genero ENUM('H','M') NOT NULL,
     carrera VARCHAR(255) NOT NULL,
@@ -86,10 +87,10 @@ INSERT INTO mentores_ue (nombre, empresa_id, cargo, correo) VALUES
 ('Ing. Guillermo Vázquez Tapia', 1, 'Gerente de Desarrollo de Planta', 'guillermo.vazquez@chrysler.com'),
 ('Lic. Daniela Hernández Gil', 2, 'Coordinador de Calidad Humana', 'daniela.hernandez@bimbo.com');
 
-INSERT INTO estudiantes (control, nombre, genero, carrera, empresa_id, mentor_acad_id, mentor_ue_id, tipo_ingreso, estatus) VALUES
-('19100234', 'José Eduardo Reyes Sánchez', 'H', 'Ingeniería en Sistemas Computacionales', 1, 1, 1, 'Ingreso', 'ACTIVO'),
-('20100451', 'Mariana Alarcón Jiménez', 'M', 'Ingeniería Industrial', 2, 2, 2, 'Reingreso', 'ACTIVO'),
-('18100129', 'Carlos Alberto Torres Cruz', 'H', 'Ingeniería Mecatrónica', 1, 1, 1, 'Ingreso', 'EGRESADO');
+INSERT INTO estudiantes (control, curp, nombre, genero, carrera, empresa_id, mentor_acad_id, mentor_ue_id, tipo_ingreso, estatus) VALUES
+('19100234', 'REJS990101HMCMNNA1', 'José Eduardo Reyes Sánchez', 'H', 'Ingeniería en Sistemas Computacionales', 1, 1, 1, 'Ingreso', 'ACTIVO'),
+('20100451', 'AAJM000202MMCMNNA2', 'Mariana Alarcón Jiménez', 'M', 'Ingeniería Industrial', 2, 2, 2, 'Reingreso', 'ACTIVO'),
+('18100129', 'TOCC980303HMCMNNA3', 'Carlos Alberto Torres Cruz', 'H', 'Ingeniería Mecatrónica', 1, 1, 1, 'Ingreso', 'EGRESADO');
 
 INSERT INTO competencias (carrera, codigo, descripcion) VALUES
 ('Ingeniería en Sistemas Computacionales', 'ISC-DB01', 'Modelar estructuras de almacenamiento optimizadas para el procesamiento transaccional rápido y seguro en ambientes industriales de Big Data.'),

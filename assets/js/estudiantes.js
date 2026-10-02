@@ -1,94 +1,116 @@
-let DB = { estudiantes: [], empresas: [], mentoresAcad: [], mentoresUe: [], competencias: [] };
+// Variable global para guardar los estudiantes
+let todosLosEstudiantes = [];
 
-async function cargarDatosGlobales() {
+// 1. Obtener datos de la API
+async function renderEstudiantes() {
+    console.log("1. Intentando cargar estudiantes...");
+    const tbody = document.getElementById('tabla-estudiantes-body');
+    
     try {
-        const [est, emp, mAcad, mUe, comp] = await Promise.all([
-            fetch(API_BASE + 'estudiantes.php').then(r => r.json()),
-            fetch(API_BASE + 'empresas.php').then(r => r.json()),
-            fetch(API_BASE + 'mentores.php?tipo=academicos').then(r => r.json()),
-            fetch(API_BASE + 'mentores.php?tipo=ue').then(r => r.json()),
-            fetch(API_BASE + 'competencias.php').then(r => r.json())
-        ]);
-        DB.estudiantes = est;
-        DB.empresas = emp;
-        DB.mentoresAcad = mAcad;
-        DB.mentoresUe = mUe;
-        DB.competencias = comp;
-    } catch (e) {
-        console.error('Error cargando datos:', e);
-        showToast('Error al cargar datos del servidor', 'error');
+        const response = await fetch('api/estudiantes.php');
+        console.log("2. Respuesta recibida del servidor:", response);
+        
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        
+        todosLosEstudiantes = await response.json();
+        console.log("3. Datos convertidos a JSON:", todosLosEstudiantes);
+        
+        pintarTablaEstudiantes(todosLosEstudiantes);
+    } catch (error) {
+        console.error("Error al cargar estudiantes:", error);
+        if (tbody) {
+            tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-red-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Error cargando datos: Revisa la consola (F12)</td></tr>`;
+        }
     }
 }
 
-async function renderDashboard() {
-    await cargarDatosGlobales();
+// 2. Dibujar las filas en el HTML
+function pintarTablaEstudiantes(estudiantes) {
+    const tbody = document.getElementById('tabla-estudiantes-body');
+    tbody.innerHTML = ''; // Limpiar tabla
 
-    const activos = DB.estudiantes.filter(e => e.estatus === 'ACTIVO');
-    const egresados = DB.estudiantes.filter(e => e.estatus === 'EGRESADO');
-    const totalHombres = activos.filter(e => e.genero === 'H').length;
-    const totalMujeres = activos.filter(e => e.genero === 'M').length;
-    const totalActivosCount = activos.length;
-    const nuevosIngresos = activos.filter(e => e.tipo_ingreso === 'Ingreso');
-    const reingresos = activos.filter(e => e.tipo_ingreso === 'Reingreso');
-
-    document.getElementById('dash-total-estudiantes').innerText = totalActivosCount;
-    document.getElementById('dash-total-egresados').innerText = egresados.length;
-    document.getElementById('dash-total-empresas').innerText = DB.empresas.length;
-    document.getElementById('dash-ingresos-badge').innerText = `${nuevosIngresos.length} Nuevo Ingreso`;
-    document.getElementById('dash-reingresos-badge').innerText = `${reingresos.length} Reingreso`;
-
-    const hombresPct = totalActivosCount > 0 ? Math.round((totalHombres / totalActivosCount) * 100) : 0;
-    const mujeresPct = totalActivosCount > 0 ? Math.round((totalMujeres / totalActivosCount) * 100) : 0;
-
-    document.getElementById('dash-hombres-pct').innerText = `${hombresPct}%`;
-    document.getElementById('dash-mujeres-pct').innerText = `${mujeresPct}%`;
-
-    document.getElementById('donut-total-count').innerText = totalActivosCount;
-    const segmentH = document.getElementById('donut-segment-hombres');
-    const segmentM = document.getElementById('donut-segment-mujeres');
-    if (segmentH && segmentM) {
-        segmentH.setAttribute('stroke-dasharray', `${hombresPct} ${100 - hombresPct}`);
-        segmentM.setAttribute('stroke-dasharray', `${mujeresPct} ${100 - mujeresPct}`);
-        segmentM.setAttribute('stroke-dashoffset', `${100 - hombresPct}`);
+    if (!Array.isArray(estudiantes) || estudiantes.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-8 text-center text-gray-500 italic">No hay estudiantes registrados.</td></tr>';
+        return;
     }
 
-    document.getElementById('dash-nuevo-ingreso-count').innerText = nuevosIngresos.length;
-    document.getElementById('dash-reingreso-count').innerText = reingresos.length;
+    estudiantes.forEach(est => {
+        const bgEstatus = est.estatus === 'ACTIVO' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-800';
+        const iconoGenero = est.genero === 'H' 
+            ? '<i class="fa-solid fa-mars text-sky-500 w-4"></i>' 
+            : '<i class="fa-solid fa-venus text-pink-500 w-4"></i>';
 
-    const listaEmp = document.getElementById('dash-lista-empresas');
-    document.getElementById('dash-empresas-badge').innerText = `${DB.empresas.length} Empresas`;
-    listaEmp.innerHTML = DB.empresas.map(emp => {
-        const estAsignados = activos.filter(e => e.empresa_id == emp.id);
-        return `
-            <div class="flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition duration-150 border-l-4 border-tecnm-blue">
-                <div>
-                    <p class="font-bold text-xs text-gray-800">${emp.nombre}</p>
-                    <p class="text-[10px] text-gray-500">${emp.giro} • RFC: ${emp.rfc}</p>
-                </div>
-                <span class="bg-tecnm-blue text-white text-[10px] px-2 py-1 rounded font-bold">
-                    ${estAsignados.length} Estudiantes
-                </span>
-            </div>
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-gray-50 transition-colors";
+        tr.innerHTML = `
+            <td class="px-6 py-4">
+                <div class="font-bold text-gray-800">${est.nombre}</div>
+                <div class="text-[11px] text-gray-500 mt-0.5">Ctrl: <span class="font-semibold">${est.control}</span> | CURP: ${est.curp || 'S/N'}</div>
+            </td>
+            <td class="px-6 py-4 text-xs">
+                <div class="font-medium text-gray-700 flex items-center gap-1.5">${iconoGenero} ${est.carrera}</div>
+            </td>
+            <td class="px-6 py-4 text-xs text-gray-700">
+                <i class="fa-solid fa-building text-tecnm-gold mr-1.5"></i> ${est.empresa_nombre || '<span class="text-red-400">Sin asignar</span>'}
+            </td>
+            <td class="px-6 py-4 text-xs">
+                <span class="bg-blue-50 text-tecnm-blue px-2.5 py-1 rounded-md font-semibold border border-blue-100">${est.tipo_ingreso}</span>
+            </td>
+            <td class="px-6 py-4 text-xs">
+                <span class="px-2.5 py-1 rounded-full font-bold ${bgEstatus}">${est.estatus}</span>
+            </td>
+            <td class="px-6 py-4 text-right text-xs">
+                <button class="text-tecnm-blue hover:text-tecnm-dark mr-3 transition" title="Editar Expediente"><i class="fa-solid fa-pen-to-square text-base"></i></button>
+                <button class="text-red-500 hover:text-red-700 transition" title="Dar de Baja"><i class="fa-solid fa-trash-can text-base"></i></button>
+            </td>
         `;
-    }).join('');
+        tbody.appendChild(tr);
+    });
+}
 
-    document.getElementById('dash-lista-ingresos').innerHTML = nuevosIngresos.length ? nuevosIngresos.map(e => `
-        <div class="bg-white p-2 rounded border border-emerald-100 shadow-xs text-xs flex justify-between items-center">
-            <div>
-                <p class="font-semibold text-gray-800">${e.nombre}</p>
-                <p class="text-[9px] text-gray-400">${e.control} • ${e.carrera}</p>
-            </div>
-            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-semibold">Nuevo</span>
-        </div>
-    `).join('') : '<p class="text-xs text-gray-400 italic">No hay nuevos ingresos registrados</p>';
+// 3. Sistema de Búsqueda y Filtros
+function filtrarEstudiantes() {
+    const textoBuscado = document.getElementById('buscar-estudiante').value.toLowerCase();
+    const estatusFiltro = document.getElementById('filtro-estatus').value;
 
-    document.getElementById('dash-lista-reingresos').innerHTML = reingresos.length ? reingresos.map(e => `
-        <div class="bg-white p-2 rounded border border-blue-100 shadow-xs text-xs flex justify-between items-center">
-            <div>
-                <p class="font-semibold text-gray-800">${e.nombre}</p>
-                <p class="text-[9px] text-gray-400">${e.control} • ${e.carrera}</p>
-            </div>
-            <span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-semibold">Reingreso</span>
-        </div>
-    `).join('') : '<p class="text-xs text-gray-400 italic">No hay reingresos activos</p>';
+    const filtrados = todosLosEstudiantes.filter(est => {
+        const coincideTexto = est.nombre.toLowerCase().includes(textoBuscado) || est.control.toLowerCase().includes(textoBuscado);
+        const coincideEstatus = estatusFiltro === 'TODOS' || est.estatus === estatusFiltro;
+        return coincideTexto && coincideEstatus;
+    });
+
+    pintarTablaEstudiantes(filtrados);
+}
+
+// 4. Guardar un Estudiante Nuevo
+async function guardarEstudiante(e) {
+    e.preventDefault();
+    
+    const datos = {
+        nombre: document.getElementById('est-nombre').value,
+        control: document.getElementById('est-control').value,
+        curp: document.getElementById('est-curp').value.toUpperCase(),
+        genero: document.getElementById('est-genero').value,
+        carrera: document.getElementById('est-carrera').value,
+        tipo_ingreso: document.getElementById('est-tipo-ingreso').value,
+        empresa_id: document.getElementById('est-empresa').value,
+        mentor_acad_id: document.getElementById('est-mentor-acad').value,
+        mentor_ue_id: document.getElementById('est-mentor-ue').value
+    };
+
+    try {
+        const res = await fetch('api/estudiantes.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
+        });
+
+        if (res.ok) {
+            closeModal('estudiante');
+            document.getElementById('form-estudiante-data').reset();
+            await renderEstudiantes();
+        }
+    } catch (error) {
+        console.error("Error al guardar:", error);
+    }
 }
